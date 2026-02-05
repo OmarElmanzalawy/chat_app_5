@@ -18,6 +18,12 @@ class AuthService {
 
   }
 
+  static Future<void> sendResetEmail(String email)async{
+
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+  }
+
   static Future<void> createUser(String email, String password, String userName)async{
 
     try{

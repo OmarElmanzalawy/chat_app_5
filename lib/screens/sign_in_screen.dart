@@ -1,6 +1,10 @@
+import 'package:chat_app/screens/email_verification_screen.dart';
+import 'package:chat_app/screens/forgot_password_screen.dart';
+import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/signup_screen.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/custom_textfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -113,7 +117,7 @@ class SignInScreen extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                           
+                              Navigator.push(context, MaterialPageRoute(builder:(context) => ForgotPasswordScreen(),));
                           },
                           child: const Text(
                             'Forgot Password?',
@@ -148,10 +152,32 @@ class SignInScreen extends StatelessWidget {
                         ),
                         child: ElevatedButton(
                           onPressed: () async {
+                            try{
+
+                            
                            await AuthService.loginUser(
                               _emailController.text,
                               _passwordController.text
                               );
+
+                            if(FirebaseAuth.instance.currentUser!.emailVerified){
+
+                               Navigator.pushAndRemoveUntil(context,
+                               MaterialPageRoute(builder:(context) => HomeScreen(),),
+                                (route) => false
+                                );
+
+                            }else{
+
+                              Navigator.pushAndRemoveUntil(context,
+                               MaterialPageRoute(builder:(context) => EmailVerificationScreen(),),
+                                (route) => false
+                                );
+                            }
+
+                            }catch(e){
+                              print("Error while signing in: ${e.toString()}");
+                            }  
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
