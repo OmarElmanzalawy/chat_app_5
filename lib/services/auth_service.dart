@@ -1,6 +1,20 @@
+import 'package:chat_app/models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
+
+  static Future<void> saveUserIntoDatabase(UserModel user)async{
+
+    try{
+
+   await FirebaseFirestore.instance.collection("users").doc(user.id).set(user.toMap());
+    }catch(e){
+      print("An error happened while storing user into firestore");
+      print(e.toString());
+    }
+
+  }
 
   static Future<bool> checkIfUserVerified()async{
 
@@ -43,14 +57,9 @@ class AuthService {
 
   static Future<void> loginUser(String email, String password)async{
 
-    try{
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
-    }catch(e){
-      print("An error while signing in");
-      print(e.toString());
-    }
 
   }
 

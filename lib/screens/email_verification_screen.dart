@@ -2,8 +2,10 @@
 
 import 'dart:async';
 
+import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
@@ -26,6 +28,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       isUserVerified = await AuthService.checkIfUserVerified();
 
       if(isUserVerified){
+        //Store user into firestore
+        final user = UserModel(
+          id: FirebaseAuth.instance.currentUser!.uid,
+          userName: FirebaseAuth.instance.currentUser!.displayName!,
+          email: FirebaseAuth.instance.currentUser!.email!
+          );
+       await AuthService.saveUserIntoDatabase(user);
         timer.cancel();
         Navigator.pushAndRemoveUntil(
           context,
