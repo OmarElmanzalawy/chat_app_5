@@ -1,4 +1,5 @@
 import 'package:chat_app/constants/app_colors.dart';
+import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/services/chat_service.dart';
 import 'package:chat_app/view_model/view_model.dart';
 import 'package:chat_app/widgets/user_card.dart';
@@ -53,12 +54,32 @@ class _HomeScreenState extends State<HomeScreen> {
             return SizedBox(height: 12,);
           },
           itemBuilder:(context, index) {
+            final model = vm.users.value[index];
             return GestureDetector(
-              onTap: () {
+              onTap: () async{
                 
+                //Generate chatId
+                final chatId = ChatService.generateChatId(model.id);
+
+                //Check if chatId already exists
+                final doesExist = await ChatService.checkIfChatExists(chatId);
+
+                if(doesExist){
+                  print("Chat already exists");
+                }
+                //If no --> Create new chat then navigate
+                else{
+                  print("Creating new chat");
+                  //Create chat
+                  await ChatService.createNewChat(chatId);
+                  
+                }
+
+                Navigator.push(context, MaterialPageRoute(builder:(context) => ChatScreen(),)); 
+
               },
               child: UserCard(
-                model: vm.users.value[index],
+                model: model,
               ),
             );
           },

@@ -23,5 +23,34 @@ class ChatService {
 
   }
 
+  static String generateChatId(String receiverId){
+
+    final currentId = FirebaseAuth.instance.currentUser!.uid;
+    String id = "";
+
+    // 
+    if(receiverId.compareTo(currentId) < 0 ){
+      id = "$receiverId$currentId";
+    }else{
+      id = "$currentId$receiverId";
+    }
+
+    return id;
+  }
+
+  static Future<bool> checkIfChatExists(String chatId)async{
+
+    final doc = await FirebaseFirestore.instance.collection("chats").doc(chatId).get();
+
+    return doc.exists;
+
+  }
+
+  static Future<void> createNewChat(String chatId)async{
+
+    await FirebaseFirestore.instance.collection("chats").doc(chatId).set({});
+
+  }
+
 
 }
