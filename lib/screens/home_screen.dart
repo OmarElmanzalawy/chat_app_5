@@ -53,7 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
             return SizedBox(height: 12,);
           },
           itemBuilder:(context, index) {
-            return UserCard();
+            return GestureDetector(
+              onTap: () {
+                
+              },
+              child: UserCard(
+                model: vm.users.value[index],
+              ),
+            );
           },
           );
         } 
