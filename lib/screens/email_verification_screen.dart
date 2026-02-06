@@ -1,7 +1,6 @@
 
 
 import 'dart:async';
-
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/services/auth_service.dart';
