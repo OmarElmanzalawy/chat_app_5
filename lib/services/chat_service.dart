@@ -55,6 +55,10 @@ class ChatService {
 
   }
 
+  //return type functionName(Paramaters){
+  
+  //}
+
   static Stream<List<MessageModel>> getMessages(String chatId){
 
     final snapshot = FirebaseFirestore.instance.collection("chats").doc(chatId).collection("messages").snapshots();

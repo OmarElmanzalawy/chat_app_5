@@ -6,6 +6,9 @@ import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+
+//Specify which stream to listen to
+
 class ChatScreen extends StatefulWidget {
   ChatScreen({super.key, required this.chatId,required this.userModel});
 
