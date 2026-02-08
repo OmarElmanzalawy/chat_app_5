@@ -1,3 +1,4 @@
+import 'package:chat_app/models/message_model.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/view_model/view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,6 +29,11 @@ class ChatService {
     final currentId = FirebaseAuth.instance.currentUser!.uid;
     String id = "";
 
+    //user 1: ABC
+    //User 2: 123
+
+
+
     // 
     if(receiverId.compareTo(currentId) < 0 ){
       id = "$receiverId$currentId";
@@ -49,6 +55,13 @@ class ChatService {
   static Future<void> createNewChat(String chatId)async{
 
     await FirebaseFirestore.instance.collection("chats").doc(chatId).set({});
+
+  }
+
+  static Future<void> sendMessage(String chatId, MessageModel model)async{
+    
+    await FirebaseFirestore.instance.collection("chats").doc(chatId).collection("messages").
+    doc(model.id).set(model.toMap());
 
   }
 

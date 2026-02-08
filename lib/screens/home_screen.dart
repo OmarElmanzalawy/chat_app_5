@@ -72,10 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   print("Creating new chat");
                   //Create chat
                   await ChatService.createNewChat(chatId);
-                  
                 }
 
-                Navigator.push(context, MaterialPageRoute(builder:(context) => ChatScreen(),)); 
+                Navigator.push(context, MaterialPageRoute(builder:(context) => 
+                ChatScreen(
+                  chatId: chatId,
+                  userModel: model,
+                ),)); 
 
               },
               child: UserCard(

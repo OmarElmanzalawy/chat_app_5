@@ -1,9 +1,16 @@
 import 'package:chat_app/constants/app_colors.dart';
+import 'package:chat_app/models/message_model.dart';
+import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/services/chat_service.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatelessWidget {
-  ChatScreen({super.key});
+  ChatScreen({super.key, required this.chatId,required this.userModel});
+
+  final String chatId;
+  final UserModel userModel;
 
   final messageController = TextEditingController();
 
@@ -138,7 +145,17 @@ class ChatScreen extends StatelessWidget {
                   ),
                   child: IconButton(
                     onPressed: () async {
-                      
+
+                        final model = MessageModel(
+                          id: UniqueKey().toString(),
+                          message: messageController.text,
+                          senderId: FirebaseAuth.instance.currentUser!.uid,
+                          senderName: userModel.userName,
+                          createdAt: DateTime.now()
+                        );
+                        //Insert chatmodel to firebase
+
+                        await ChatService.sendMessage(chatId, model);
                     },
                     icon: const Icon(
                       Icons.send,
