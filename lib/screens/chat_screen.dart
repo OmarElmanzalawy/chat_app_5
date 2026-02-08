@@ -6,16 +6,34 @@ import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   ChatScreen({super.key, required this.chatId,required this.userModel});
 
   final String chatId;
   final UserModel userModel;
 
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   final messageController = TextEditingController();
+
+  late Stream<List<MessageModel>> messages;
+  
+  @override
+  void initState() {
+    messages = ChatService.getMessages(widget.chatId);
+    messages.listen((data){
+      print("new meesages");
+      print(data.length);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("Chat id: ${widget.chatId}");
     return Scaffold(
       backgroundColor:  AppColors.chatBackground, 
       appBar: AppBar(
@@ -30,7 +48,6 @@ class ChatScreen extends StatelessWidget {
             CircleAvatar(
               radius: 18,
               backgroundColor: Colors.grey.shade300,
-              
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -72,11 +89,16 @@ class ChatScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: ListView(
-              children: [
-                ChatBubble(isMe: false,),
-                ChatBubble(isMe: true,)
-              ],
+            child: StreamBuilder(
+              stream: messages,
+              builder:(context, snapshot) {
+                return  ListView.builder(
+                  itemCount: snapshot.data?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    return ChatBubble(isMe: true);
+                  },
+              );
+              }
             )
           ),
           Container(
@@ -150,12 +172,12 @@ class ChatScreen extends StatelessWidget {
                           id: UniqueKey().toString(),
                           message: messageController.text,
                           senderId: FirebaseAuth.instance.currentUser!.uid,
-                          senderName: userModel.userName,
+                          senderName: widget.userModel.userName,
                           createdAt: DateTime.now()
                         );
                         //Insert chatmodel to firebase
 
-                        await ChatService.sendMessage(chatId, model);
+                        await ChatService.sendMessage(widget.chatId, model);
                     },
                     icon: const Icon(
                       Icons.send,

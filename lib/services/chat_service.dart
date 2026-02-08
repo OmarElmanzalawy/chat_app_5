@@ -29,8 +29,6 @@ class ChatService {
     final currentId = FirebaseAuth.instance.currentUser!.uid;
     String id = "";
 
-    //user 1: ABC
-    //User 2: 123
 
 
 
@@ -49,12 +47,25 @@ class ChatService {
     final doc = await FirebaseFirestore.instance.collection("chats").doc(chatId).get();
 
     return doc.exists;
-
   }
 
   static Future<void> createNewChat(String chatId)async{
 
     await FirebaseFirestore.instance.collection("chats").doc(chatId).set({});
+
+  }
+
+  static Stream<List<MessageModel>> getMessages(String chatId){
+
+    final snapshot = FirebaseFirestore.instance.collection("chats").doc(chatId).collection("messages").snapshots();
+
+    final model = snapshot.map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return MessageModel.fromMap(doc.data());
+      }).toList();
+    });
+
+    return model;
 
   }
 
