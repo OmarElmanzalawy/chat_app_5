@@ -95,12 +95,28 @@ class _ChatScreenState extends State<ChatScreen> {
             child: StreamBuilder(
               stream: messages,
               builder:(context, snapshot) {
-                return  ListView.builder(
+                if(snapshot.hasData){
+                  return  ListView.builder(
                   itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (context, index) {
-                    return ChatBubble(isMe: true);
+                    return ChatBubble(
+                      isMe: true,
+                      model: snapshot.data![index],
+                      );
                   },
               );
+                }
+                else if(snapshot.hasError){
+                  Center(
+                    child: Text("Couldn't fetch messages"),
+                  );
+                }else if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return SizedBox();
+                
               }
             )
           ),
