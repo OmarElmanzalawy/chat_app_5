@@ -1,15 +1,17 @@
 import 'package:chat_app/models/message_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({super.key,required this.isMe, required this.model});
+  const ChatBubble({super.key, required this.model});
 
-  final bool isMe;
   final MessageModel model;
 
   @override
   Widget build(BuildContext context) {
+
+    final isMe = FirebaseAuth.instance.currentUser!.uid == model.senderId;
     
     return Container(
           margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),

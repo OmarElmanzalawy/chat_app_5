@@ -100,7 +100,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (context, index) {
                     return ChatBubble(
-                      isMe: true,
                       model: snapshot.data![index],
                       );
                   },

@@ -61,7 +61,7 @@ class ChatService {
 
   static Stream<List<MessageModel>> getMessages(String chatId){
 
-    final snapshot = FirebaseFirestore.instance.collection("chats").doc(chatId).collection("messages").snapshots();
+    final snapshot = FirebaseFirestore.instance.collection("chats").doc(chatId).collection("messages").orderBy("createdAt").snapshots();
 
     final model = snapshot.map((snapshot) {
       return snapshot.docs.map((doc) {
