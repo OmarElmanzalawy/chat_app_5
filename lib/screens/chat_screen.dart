@@ -101,6 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemBuilder: (context, index) {
                     return ChatBubble(
                       model: snapshot.data![index],
+                      chatId: widget.chatId,
                       );
                   },
               );
