@@ -10,10 +10,10 @@ import 'package:flutter/material.dart';
 //Specify which stream to listen to
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen({super.key, required this.chatId,required this.userModel});
+  ChatScreen({super.key, required this.chatId,this.userModel});
 
   final String chatId;
-  final UserModel userModel;
+  final UserModel? userModel;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -58,7 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                    Text(
-                    widget.userModel.userName,
+                    widget.userModel?.userName ?? "Chatbot",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -191,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           id: UniqueKey().toString(),
                           message: messageController.text,
                           senderId: FirebaseAuth.instance.currentUser!.uid,
-                          senderName: widget.userModel.userName,
+                          senderName: widget.userModel?.userName ?? "Gemini",
                           createdAt: DateTime.now()
                         );
                         //Insert chatmodel to firebase

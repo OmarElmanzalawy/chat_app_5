@@ -3,9 +3,9 @@ import 'package:chat_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({super.key, required this.model});
+  const UserCard({super.key, this.model});
 
-  final UserModel model;
+  final UserModel? model;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +31,14 @@ class UserCard extends StatelessWidget {
                       ),
                       child: CircleAvatar(
                         radius: 30,
-                        backgroundImage: NetworkImage("https://static.vecteezy.com/system/resources/previews/047/733/682/non_2x/grey-avatar-icon-user-avatar-photo-icon-social-media-user-icon-vector.jpg"),
+                        backgroundImage: NetworkImage(model != null ? "https://static.vecteezy.com/system/resources/previews/047/733/682/non_2x/grey-avatar-icon-user-avatar-photo-icon-social-media-user-icon-vector.jpg" : 
+                        
+                        "https://www.shutterstock.com/image-vector/chat-bot-icon-design-robot-600nw-2476207303.jpg"
+                        ),
                         
                       ),
                     ),
-                    Text(model.userName[0].toUpperCase(),style: TextStyle(fontSize: 20, color: AppColors.appBarBackground, fontWeight: FontWeight.bold),),
+                    Text(model?.userName[0].toUpperCase() ?? "",style: TextStyle(fontSize: 20, color: AppColors.appBarBackground, fontWeight: FontWeight.bold),),
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -47,21 +50,21 @@ class UserCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(model.userName,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-                    Row(
+                    Text(model?.userName ?? "Chatbot",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                   model != null ?  Row(
                       spacing: 4,
                       children: [
                         Icon(Icons.email_outlined,color: Colors.grey.shade600, size: 17,),
-                        Text(model.email,style: TextStyle(color: Colors.grey.shade600),),
+                        Text(model!.email,style: TextStyle(color: Colors.grey.shade600),),
                       ],
-                    ),
+                    ) : const SizedBox(),
                     Row(
                       spacing: 4,
                           children: [
                             Icon(Icons.circle, size: 10,color: Colors.green,),
                             Text("Available to chat",style: TextStyle(fontStyle: FontStyle.italic,color: Colors.grey.shade600,fontSize: 14),)
                           ],
-                      ),
+                      )
                   ],
                 ),
                 Spacer(),

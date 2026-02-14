@@ -54,12 +54,18 @@ class _HomeScreenState extends State<HomeScreen> {
         builder:(context, value, child) {
           return ListView.separated(
           padding: EdgeInsets.only(top: 30),
-          itemCount: vm.users.value.length,
+          itemCount: vm.users.value.length + 1,
           separatorBuilder: (context, index) {
             return SizedBox(height: 12,);
           },
           itemBuilder:(context, index) {
-            final model = vm.users.value[index];
+
+            if(index == 0){
+              return UserCard(model: null);
+            }
+
+
+            final model = vm.users.value[index - 1];
             return GestureDetector(
               onTap: () async{
                 

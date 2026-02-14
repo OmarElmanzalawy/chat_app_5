@@ -17,7 +17,7 @@ class EmailVerificationScreen extends StatefulWidget {
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> with SingleTickerProviderStateMixin{
 
 
-  // late final Timer timer;
+  late final Timer timer;
   late AnimationController animationController;
   late Animation<double> iconScale;
   late Animation<double> pulsatingAnimation;
@@ -32,28 +32,28 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> with 
 
     animationController.repeat(reverse: true);
 
-    // bool isUserVerified;
-    //  timer = Timer.periodic(Duration(seconds: 3), (_)async{
+    bool isUserVerified;
+     timer = Timer.periodic(Duration(seconds: 3), (_)async{
 
-    //   isUserVerified = await AuthService.checkIfUserVerified();
+      isUserVerified = await AuthService.checkIfUserVerified();
 
-    //   if(isUserVerified){
-    //     //Store user into firestore
-    //     final user = UserModel(
-    //       id: FirebaseAuth.instance.currentUser!.uid,
-    //       userName: FirebaseAuth.instance.currentUser!.displayName!,
-    //       email: FirebaseAuth.instance.currentUser!.email!
-    //       );
-    //    await AuthService.saveUserIntoDatabase(user);
-    //     timer.cancel();
-    //     Navigator.pushAndRemoveUntil(
-    //       context,
-    //        MaterialPageRoute(builder:(context) => HomeScreen(),),
-    //       (routes) => false
-    //       );
+      if(isUserVerified){
+        //Store user into firestore
+        final user = UserModel(
+          id: FirebaseAuth.instance.currentUser!.uid,
+          userName: FirebaseAuth.instance.currentUser!.displayName!,
+          email: FirebaseAuth.instance.currentUser!.email!
+          );
+       await AuthService.saveUserIntoDatabase(user);
+        timer.cancel();
+        Navigator.pushAndRemoveUntil(
+          context,
+           MaterialPageRoute(builder:(context) => HomeScreen(),),
+          (routes) => false
+          );
 
-    //   }
-    // });
+      }
+    });
 
     super.initState();
   }
