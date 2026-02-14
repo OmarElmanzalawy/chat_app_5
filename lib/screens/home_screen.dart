@@ -40,7 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text("Whatsapp",),
             const SizedBox(height: 10,),
-            Text("3 users available",style: TextStyle(color: Colors.grey.shade400,fontSize: 14),)
+            ValueListenableBuilder(
+              valueListenable: vm.users,
+              builder: (context, value, child) {
+                return Text("${vm.users.value.length} users available",style: TextStyle(color: Colors.grey.shade400,fontSize: 14),);
+              }
+            )
           ],
         ),
       ),

@@ -58,7 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                    Text(
-                    "username",
+                    widget.userModel.userName,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
