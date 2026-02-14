@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/email_verification_screen.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // home: FirebaseAuth.instance.currentUser != null ? HomeScreen() : SignUpScreen()
-    home: SignUpScreen(),
+    home: EmailVerificationScreen(),
     );
   }
 }
