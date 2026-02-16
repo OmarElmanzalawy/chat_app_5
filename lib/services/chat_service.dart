@@ -3,8 +3,27 @@ import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/view_model/view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class ChatService {
+
+  static Future<void> createChatWithBot()async{
+
+    final chatId = "_gemini_${FirebaseAuth.instance.currentUser!.uid}";
+
+    final doc = await FirebaseFirestore.instance.collection("chats").doc(chatId).get();
+
+    if(doc.exists){
+      print("Chat already exists with bot");
+      return;
+
+    }else{
+      //Create chatid document
+      print("Creating new chat with bot");
+      await FirebaseFirestore.instance.collection("chats").doc(chatId).set({});
+    }
+
+  }
 
   static Future<void> fetchUsers()async{
 

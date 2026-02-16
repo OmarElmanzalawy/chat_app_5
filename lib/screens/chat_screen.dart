@@ -2,6 +2,7 @@ import 'package:chat_app/constants/app_colors.dart';
 import 'package:chat_app/models/message_model.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/services/chat_service.dart';
+import 'package:chat_app/services/gemini_service.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -175,7 +176,6 @@ class _ChatScreenState extends State<ChatScreen> {
                         ],
                       )
                     ),
-
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -187,13 +187,25 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: IconButton(
                     onPressed: () async {
 
-                        final model = MessageModel(
+                      final model = MessageModel(
                           id: UniqueKey().toString(),
                           message: messageController.text,
                           senderId: FirebaseAuth.instance.currentUser!.uid,
                           senderName: widget.userModel?.userName ?? "Gemini",
                           createdAt: DateTime.now()
                         );
+
+                      if(widget.chatId.contains("gemini")){
+                      print("Chatting to bot");
+                      await ChatService.sendMessage(widget.chatId, model);
+                       await GeminiService.sendMessageToGemini(messageController.text, widget.chatId);
+                       return;
+
+                      }
+
+                      print("Chatting to human");
+
+                        
                         //Insert chatmodel to firebase
 
                         await ChatService.sendMessage(widget.chatId, model);

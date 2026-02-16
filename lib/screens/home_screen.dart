@@ -1,8 +1,10 @@
 import 'package:chat_app/constants/app_colors.dart';
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/services/chat_service.dart';
+import 'package:chat_app/services/gemini_service.dart';
 import 'package:chat_app/view_model/view_model.dart';
 import 'package:chat_app/widgets/user_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    // GeminiService.sendMessageToGemini("Who is elon musk");
     ChatService.fetchUsers();
     super.initState();
   }
@@ -61,7 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder:(context, index) {
 
             if(index == 0){
-              return UserCard(model: null);
+              return GestureDetector(
+                onTap: () async{
+                  await ChatService.createChatWithBot();
+                  Navigator.push(context, MaterialPageRoute(builder:(context) => ChatScreen(chatId: "_gemini_${FirebaseAuth.instance.currentUser!.uid}"),));
+
+                },
+                child: UserCard(model: null)
+                );
             }
 
 
